@@ -7,7 +7,8 @@ trackBarHeight(document.querySelector(".topbar"));
 startRouter();
 startRotation(".verb", VERBS, 2200, 0);
 startRotation(".game", GAMES, 3300, 1100);
-startReel(document.querySelector(".reel-section"));
+document.querySelectorAll(".reel-section").forEach(startReel);
+startScrollHint(document.querySelector(".scroll-hint"), document.querySelector(".reel-section"));
 
 function trackBarHeight(bar) {
   const set = () => document.documentElement.style.setProperty("--bar", `${bar.offsetHeight}px`);
@@ -120,4 +121,8 @@ function startReel(section) {
       advance(track, items, Number(arrow.dataset.dir));
     });
   });
+}
+
+function startScrollHint(hint, target) {
+  hint.addEventListener("click", () => target.scrollIntoView({ behavior: "smooth" }));
 }
