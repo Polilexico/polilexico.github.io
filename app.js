@@ -3,11 +3,17 @@ const GAMES = ["Léxico", "Scrabble"];
 const SWAP_MS = 350;
 const CAROUSEL_MS = 3500;
 
+trackBarHeight(document.querySelector(".topbar"));
 startRouter();
 startRotation(".verb", VERBS, 2200, 0);
 startRotation(".game", GAMES, 3300, 1100);
-startCarousel(document.querySelector(".shots"), document.querySelector(".dots"));
 startReel(document.querySelector(".reel-section"));
+
+function trackBarHeight(bar) {
+  const set = () => document.documentElement.style.setProperty("--bar", `${bar.offsetHeight}px`);
+  new ResizeObserver(set).observe(bar);
+  set();
+}
 
 function startRouter() {
   window.addEventListener("hashchange", showCurrentView);
