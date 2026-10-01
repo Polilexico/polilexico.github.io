@@ -180,15 +180,21 @@ main {
 
 .apps h2 {
   margin: 0 0 16px;
+  text-align: center;
   font-family: Fraunces, Georgia, serif;
   font-weight: 600;
   font-size: 1.6rem;
 }
 
 .cards {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(min(100%, 18rem), 1fr));
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   gap: 20px;
+}
+
+.cards .card {
+  flex: 0 1 26rem;
 }
 
 .card {
