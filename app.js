@@ -7,7 +7,7 @@ startRouter();
 startRotation(".verb", VERBS, 2200, 0);
 startRotation(".game", GAMES, 3300, 1100);
 startCarousel(document.querySelector(".shots"), document.querySelector(".dots"));
-startStory(document.querySelector(".story"));
+startReel(document.querySelector(".reel-section"));
 
 function startRouter() {
   window.addEventListener("hashchange", showCurrentView);
@@ -76,8 +76,8 @@ function startCarousel(track, dots) {
   const marks = items.map(() => dots.appendChild(makeDot()));
   let touched = false;
   track.addEventListener("pointerdown", () => (touched = true), { once: true });
-  track.addEventListener("scroll", () => markDot(marks, currentItem(track, items)));
-  markDot(marks, 0);
+  track.addEventListener("scroll", () => markDot(marks, items, currentItem(track, items)));
+  markDot(marks, items, 0);
   setInterval(() => touched || advance(track, items), CAROUSEL_MS);
 }
 
@@ -93,37 +93,25 @@ function currentItem(track, items) {
   return distances.indexOf(Math.min(...distances));
 }
 
-function markDot(marks, index) {
+function markDot(marks, items, index) {
   marks.forEach((dot, i) => dot.classList.toggle("active", i === index));
+  items.forEach((item, i) => item.classList.toggle("current", i === index));
 }
 
-function advance(track, items) {
+function advance(track, items, step = 1) {
   if (track.scrollWidth <= track.clientWidth) return;
-  const next = items[(currentItem(track, items) + 1) % items.length];
+  const next = items[(currentItem(track, items) + step + items.length) % items.length];
   track.scrollTo({ left: next.offsetLeft - (track.clientWidth - next.offsetWidth) / 2, behavior: "smooth" });
 }
 
-function startStory(story) {
-  const steps = [...story.querySelectorAll(".step")];
-  const shots = [...story.querySelectorAll(".story-shot")];
-  const update = () => showStep(steps, shots, centeredStep(steps));
-  window.addEventListener("scroll", update, { passive: true });
-  window.addEventListener("hashchange", update);
-  update();
-}
-
-function centeredStep(steps) {
-  const middle = window.innerHeight / 2;
-  const distances = steps.map((step) => {
-    const box = step.getBoundingClientRect();
-    return Math.abs(box.top + box.height / 2 - middle);
+function startReel(section) {
+  const track = section.querySelector(".reel");
+  const items = [...track.children];
+  startCarousel(track, section.querySelector(".reel-dots"));
+  section.querySelectorAll(".reel-arrow").forEach((arrow) => {
+    arrow.addEventListener("click", () => {
+      track.dispatchEvent(new Event("pointerdown"));
+      advance(track, items, Number(arrow.dataset.dir));
+    });
   });
-  return steps[distances.indexOf(Math.min(...distances))];
-}
-
-function showStep(steps, shots, step) {
-  const index = steps.indexOf(step);
-  if (step.classList.contains("active")) return;
-  steps.forEach((s, i) => s.classList.toggle("active", i === index));
-  shots.forEach((s, i) => s.classList.toggle("active", i === index));
 }
