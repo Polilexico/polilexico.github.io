@@ -103,16 +103,11 @@ function currentItem(track, items) {
 function markDot(marks, items, index) {
   marks.forEach((dot, i) => dot.classList.toggle("active", i === index));
   items.forEach((item, i) => item.classList.toggle("current", i === index));
-  const section = items[0].closest(".reel-section");
-  if (!section) return;
-  section.querySelector('[data-dir="-1"]').disabled = index === 0;
-  section.querySelector('[data-dir="1"]').disabled = index === items.length - 1;
 }
 
 function advance(track, items, step = 1) {
   if (track.scrollWidth <= track.clientWidth) return;
   const next = items[(currentItem(track, items) + step + items.length) % items.length];
-  if (!next) return;
   track.scrollTo({ left: next.offsetLeft - (track.clientWidth - next.offsetWidth) / 2, behavior: "smooth" });
 }
 
