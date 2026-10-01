@@ -4,9 +4,57 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Poliléxico</title>
+<meta name="description" content="Apps para jugar, aprender y estudiar Léxico y Scrabble. Gratuitas, offline, tuyas.">
+<link rel="icon" href="assets/logo.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800&family=Inter:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="styles.css">
+<script src="app.js" defer></script>
 </head>
 <body>
-<h1>Poliléxico</h1>
-<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+<header class="topbar">
+  <a class="brand" href="#">
+    <img src="assets/logo.svg" alt="">
+    <span>Poliléxico</span>
+  </a>
+  <nav class="tabs">
+    <a class="tab" href="#" data-tab="home">Inicio</a>
+    <a class="tab" href="#polilexico" data-tab="polilexico">Poliléxico</a>
+  </nav>
+</header>
+
+<main>
+  <section class="view" data-view="home">
+    <div class="hero">
+      <h1 class="headline">
+        Apps para
+        <span class="rotor">
+          <span class="slot verb"><span class="word">jugar</span></span>
+          <span class="slot game"><span class="word">Léxico</span></span>
+        </span>
+      </h1>
+      <p class="tagline">Gratuitas, Offline, Tuyas.</p>
+    </div>
+
+    <div class="apps">
+      <h2>Apps</h2>
+      <div class="cards">
+        <a class="card" href="#polilexico">
+          <img src="assets/logo.svg" alt="">
+          <h3>Poliléxico</h3>
+          <p>Scrabble en español, sin conexión. Clásica y duplicada, minijuegos y un analizador.</p>
+          <span class="more">Ver app →</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="view" data-view="polilexico" hidden></section>
+</main>
+
+<footer class="footer">
+  <a href="https://github.com/Polilexico">github.com/Polilexico</a>
+</footer>
 </body>
 </html>
