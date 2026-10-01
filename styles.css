@@ -388,9 +388,6 @@ main {
   padding: 16px 0;
 }
 
-.reel-section:has(figcaption small) {
-  --reel-w: min(60vw, calc((var(--view) - 15rem) * var(--shot-ratio)));
-}
 
 .reel-title {
   margin: 0 0 16px;
@@ -406,7 +403,7 @@ main {
   display: flex;
   gap: 24px;
   margin: 0 -16px;
-  padding: 8px calc(50% - var(--reel-w) / 2) 12px;
+  padding: 8px 0 12px;
   overflow-x: auto;
   scroll-snap-type: x mandatory;
   scrollbar-width: none;
@@ -417,22 +414,19 @@ main {
 }
 
 .reel figure {
-  flex: 0 0 var(--reel-w);
+  flex: 0 0 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: clamp(20px, 4vw, 56px);
   margin: 0;
   scroll-snap-align: center;
-  opacity: 0.45;
-  transform: scale(0.94);
-  transition: opacity 0.3s, transform 0.3s;
-}
-
-.reel figure.current {
-  opacity: 1;
-  transform: none;
 }
 
 .reel img {
   display: block;
-  width: 100%;
+  flex: none;
+  width: var(--reel-w);
   height: auto;
   border-radius: 16px;
   border: 1px solid var(--line);
@@ -440,19 +434,20 @@ main {
 }
 
 .reel figcaption {
-  margin-top: 10px;
-  text-align: center;
+  max-width: 22rem;
   font-family: Fraunces, Georgia, serif;
-  font-weight: 600;
-  font-size: 1.2rem;
+  font-weight: 800;
+  font-size: clamp(1.6rem, 3.2vw, 2.6rem);
+  line-height: 1.15;
+  letter-spacing: -0.01em;
 }
 
 .reel figcaption small {
   display: block;
-  margin-top: 2px;
+  margin-top: 8px;
   font-family: Inter, system-ui, sans-serif;
-  font-weight: 500;
-  font-size: 0.95rem;
+  font-weight: 600;
+  font-size: clamp(1rem, 1.8vw, 1.3rem);
   color: var(--orange);
 }
 
@@ -497,35 +492,76 @@ main {
   gap: 8px;
 }
 
+.reel-section {
+  position: relative;
+}
+
 .reel-arrow {
-  width: 2.5rem;
-  height: 2.5rem;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  display: grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  padding: 0;
+  border: 0;
   border-radius: 50%;
-  border: 1px solid var(--line);
-  background: var(--surface);
-  color: var(--text);
-  font-size: 1.4rem;
+  background: none;
+  color: var(--muted);
+  font-size: 2.4rem;
   line-height: 1;
   cursor: pointer;
-  transition: border-color 0.2s, color 0.2s;
+  transition: color 0.2s, opacity 0.2s;
+}
+
+.reel-arrow[data-dir="-1"] {
+  left: 0;
+}
+
+.reel-arrow[data-dir="1"] {
+  right: 0;
+  color: var(--orange);
+  animation: beckon 1.8s ease-in-out infinite;
 }
 
 .reel-arrow:hover {
-  border-color: var(--orange);
   color: var(--orange);
+}
+
+.reel-arrow:disabled {
+  opacity: 0;
+  pointer-events: none;
+}
+
+@keyframes beckon {
+  50% {
+    transform: translate(6px, -50%);
+  }
 }
 
 @media (max-width: 720px) {
   .reel-section {
-    --reel-w: min(72vw, calc((var(--view) - 12rem) * var(--shot-ratio)));
+    --reel-w: min(66vw, calc((var(--view) - 14rem) * var(--shot-ratio)));
   }
 
   .reel {
-    gap: 16px;
+    gap: 0;
+  }
+
+  .reel figure {
+    flex-direction: column;
+    gap: 12px;
+    text-align: center;
+  }
+
+  .reel figcaption {
+    font-size: clamp(1.3rem, 6vw, 1.7rem);
   }
 
   .reel-arrow {
-    display: none;
+    width: 2.25rem;
+    font-size: 2rem;
   }
 }
 
@@ -540,7 +576,8 @@ main {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .scroll-hint svg {
+  .scroll-hint svg,
+  .reel-arrow {
     animation: none;
   }
 
