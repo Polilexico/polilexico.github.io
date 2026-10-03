@@ -363,6 +363,19 @@ main {
   border-top: 1px solid var(--line);
 }
 
+.footer p {
+  margin: 0;
+}
+
+.footer p + p {
+  margin-top: 6px;
+}
+
+.footer p:first-child a {
+  color: var(--text);
+  font-weight: 600;
+}
+
 .footer a:hover {
   color: var(--orange);
 }
