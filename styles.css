@@ -371,7 +371,7 @@ main {
   margin-top: 6px;
 }
 
-.footer p:first-child a {
+.footer strong {
   color: var(--text);
   font-weight: 600;
 }
