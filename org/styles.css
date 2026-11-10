@@ -566,3 +566,8 @@ main {
     transition: none;
   }
 }
+
+.play-web {
+  color: var(--orange);
+  font-weight: 600;
+}
