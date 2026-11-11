@@ -1,3 +1,4 @@
+import { setting } from "../settings.js";
 import { h, replace } from "../dom.js";
 import { lobbyRoute } from "./lobby.js";
 import { icon, bagIcon } from "../icons.js";
@@ -129,7 +130,7 @@ class RoomView {
     const p = this.placer;
     const pending = new Map([...p.pending].map(([i, x]) => [i, x.tile]));
     const placement = p.placement();
-    const score = placement ? { index: at(placement, placement.tiles.length - 1), value: placementScore(this.t.cells, placement) } : null;
+    const score = placement && setting("liveScore") ? { index: at(placement, placement.tiles.length - 1), value: placementScore(this.t.cells, placement) } : null;
     this.board.render({ cells: this.t.cells, latest: this.t.latest, pending, arrow: this.canPlay() ? p.arrow : null, score });
   }
 

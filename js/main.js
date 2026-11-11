@@ -31,6 +31,8 @@ import { gamesScreen } from "./games/list.js";
 import { statsScreen } from "./games/stats.js";
 import { reviewScreen } from "./games/review.js";
 import { READY_ROUTES } from "./screens/menu.js";
+import { offerDownload } from "./screens/download.js";
+import { watchMessages } from "./online/messages.js";
 
 apply();
 ["sprint", "finales", "recuerdas", "anagrama", "anagramador", "analizador", "listas", "diccionario"].forEach((r) => READY_ROUTES.add(r));
@@ -73,4 +75,6 @@ start({
   estudiar: menuScreen("estudiar"),
 });
 
+watchMessages();
+offerDownload();
 window.addEventListener("load", () => setTimeout(startEngine, 300));

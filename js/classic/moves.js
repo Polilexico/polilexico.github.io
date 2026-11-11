@@ -1,3 +1,4 @@
+import { setting } from "../settings.js";
 import { h } from "../dom.js";
 import { LETTERS, BLANK } from "../tiles.js";
 import { openDialog, actions } from "../dialogs.js";
@@ -35,6 +36,7 @@ export function movesDialog(state, names) {
 }
 
 export function bagDialog(state, title = null) {
+  if (!title && !setting("showUnseen")) return bagCount(state);
   const counts = new Map();
   state.unseen.forEach((t) => counts.set(t, (counts.get(t) ?? 0) + 1));
   const order = [...LETTERS, BLANK].filter((l) => counts.has(l));
@@ -44,6 +46,10 @@ export function bagDialog(state, title = null) {
     title ? null : h("p.muted", {}, `${state.bag} en la bolsa · ${state.opponentTiles} en el atril rival`),
     actions(h("button.text-btn", { onclick: close }, "Cerrar")),
   ]);
+}
+
+function bagCount(state) {
+  openDialog((close) => [h("h2", {}, `En la bolsa: ${state.bag}`), actions(h("button.text-btn", { onclick: close }, "Cerrar"))]);
 }
 
 export function askBlank() {
