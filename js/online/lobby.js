@@ -9,6 +9,7 @@ import { tellDialog } from "./tell.js";
 import { photoAvatar, profileDialog } from "./profile.js";
 import { load, save } from "../store.js";
 import { fitArea, fullSection } from "./fit.js";
+import { blockedByGame } from "./involved.js";
 
 export function lobbyRoute() {
   return load("lobbyTab", "classic") === "duplicate" ? "duplicada" : "clasica";
@@ -69,7 +70,7 @@ function draw(c, ui) {
     : h("button.btn.block.lobby-seek", { onclick: () => go("buscar") }, "Buscar clásica"));
 }
 
-function roomRoute(c) {
+export function roomRoute(c) {
   if (!c.room) return null;
   if (c.room.duplicate) return c.table ? "sala-duplicada" : null;
   return c.session || c.room.watching ? "sala" : null;
@@ -187,7 +188,7 @@ function people(c, dup) {
   const items = c.lobby.people.filter((p) => !(p.name === me.name && p.country === me.country));
   const row = (p) => playerRow(p.name, p.country, p.playing ? "Jugando" : "",
     h("button.icon-btn", { "aria-label": `Escribir a ${p.name}`, onclick: () => tellDialog(p) }, icon("chat", 22)),
-    p.playing || dup ? null : h("button.btn.small", { onclick: () => go("buscar/" + encodeURIComponent(p.name) + "/" + p.country) }, "Retar"),
+    p.playing || dup ? null : h("button.btn.small", { onclick: () => blockedByGame() || go("buscar/" + encodeURIComponent(p.name) + "/" + p.country) }, "Retar"),
   );
   return { title: "En línea", items, row, empty: () => emptyState("person", "No hay nadie más en línea.") };
 }

@@ -2,6 +2,7 @@ import { Link } from "./link.js";
 import { RemoteSession } from "./remote.js";
 import { readTable } from "./table.js";
 import { load, save } from "../store.js";
+import { involvedDialog } from "./involved.js";
 
 const NOTICE_MS = 5000;
 const CHAT_SIZE = 60;
@@ -260,6 +261,7 @@ const HANDLERS = {
   watchers: (c, e) => (c.watchers = e.people ?? []),
   table: (c, e) => c.room && (c.table = readTable(e.view, c.room.watching ? "" : c.room.me)),
   duplicateOffer: (c, e) => (c.offer = e.code),
+  involved: () => involvedDialog(),
 };
 
 function key(p) {

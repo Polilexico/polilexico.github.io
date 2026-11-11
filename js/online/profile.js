@@ -7,6 +7,7 @@ import { account, request, token, server, logOut } from "./api.js";
 import { countryName } from "./countries.js";
 import { online } from "./client.js";
 import { tellDialog } from "./tell.js";
+import { blockedByGame } from "./involved.js";
 import { onlineBlock } from "../games/stats.js";
 
 const PHOTO_SIDE = 256;
@@ -26,7 +27,7 @@ export function profileDialog(person) {
     body,
     actions(
       h("button.text-btn", { onclick: () => (close(), tellDialog(person)) }, "Escribir"),
-      person.playing ? null : h("button.text-btn", { onclick: () => (close(), go("buscar/" + encodeURIComponent(person.name) + "/" + person.country)) }, "Retar"),
+      person.playing ? null : h("button.text-btn", { onclick: () => (close(), blockedByGame() || go("buscar/" + encodeURIComponent(person.name) + "/" + person.country)) }, "Retar"),
       h("button.text-btn", { onclick: close }, "Cerrar"),
     ),
   ], { wide: true });
