@@ -85,7 +85,12 @@
   .lobby { display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: minmax(0, 1fr); gap: 32px; }
   .lobby-top { max-height: 100%; }
   .lobby-seek { max-width: 420px; margin: 0 auto; }
+  .lobby-buttons { width: 100%; max-width: 420px; margin: 0 auto; }
 }
+
+.lobby-buttons { gap: 8px; }
+
+.lobby-buttons .lobby-seek { flex: 1 1 0; min-width: 0; max-width: none; margin: 0; justify-content: center; }
 
 .offer-card { display: flex; flex-direction: column; gap: 6px; border-color: var(--primary); }
 
@@ -230,3 +235,5 @@
 .about-license .small { margin: 0; }
 
 .about-author { gap: 2px; }
+
+.bar-chat { display: none; font-size: 18px; }

@@ -35,6 +35,7 @@ function send(form, rival) {
   if (blockedByGame()) return;
   save("seekForm", form);
   save("lobbyTab", "classic");
+  save("tab.classic", "online");
   const proposal = { single: form.single, timed: form.timed, timeMs: form.timed ? timeMs : 0, overtimeMs: form.timed ? overtimeMs : 0 };
   if (rival) online.challenge(rival, proposal);
   else online.publish(proposal);

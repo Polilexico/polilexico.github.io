@@ -72,7 +72,9 @@ function draw(c, ui) {
   ui.lower.show(dup ? [games(c, dup)] : [games(c, dup), challengeable(c)]);
   replace(ui.publish, dup
     ? h("button.btn.block.lobby-seek", { onclick: () => go("crear-duplicada") }, "Crear duplicada")
-    : h("button.btn.block.lobby-seek", { onclick: () => go("buscar") }, "Buscar clásica"));
+    : h("div.row.lobby-buttons", {},
+      h("button.btn.grow.lobby-seek", { onclick: () => go("buscar") }, "Buscar clásica"),
+      h("button.btn.outlined.grow.lobby-seek", { onclick: () => go("terminadas/online") }, "Terminadas")));
 }
 
 function modeOffers(c, dup) {
