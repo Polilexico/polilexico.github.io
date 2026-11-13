@@ -2,24 +2,36 @@ import { h } from "../dom.js";
 import { formatClock, initialAvatar, flag } from "../parts.js";
 import { BLANK } from "../tiles.js";
 
-export function playerCard({ name, country, photo, mine }) {
+export function playerCard({ name, country, photo, mine, profile }) {
   const nameEl = h("span", {}, name);
+  const open = profile ? () => profile(nameEl.textContent) : null;
   const score = h("span.score");
   const clock = h("span.clock.hidden");
   const tiles = h("div.mini-tiles");
   const status = h("span.player-status.muted");
   const el = h("div", { class: "player-card" + (mine ? " mine" : "") },
-    avatar(name, photo, mine),
-    h("div.player-main", {}, h("div.row", {}, h("span.player-name.ellipsis", {}, nameEl, country ? " " + flag(country) : ""), status), tiles),
+    opener(avatar(name, photo, mine), open),
+    h("div.player-main", {}, h("div.row", {}, opener(h("span.player-name.ellipsis", {}, nameEl, country ? " " + flag(country) : ""), open), status), tiles),
     score,
     clock,
   );
   return { el, update: (data) => update({ el, score, clock, tiles, status, nameEl }, data) };
 }
 
+function opener(el, open) {
+  if (!el || !open) return el;
+  el.classList.add("opens-profile");
+  el.addEventListener("click", open);
+  return el;
+}
+
 function avatar(name, photo, mine) {
   if (mine) return null;
-  if (photo) return h("img.avatar", { src: photo, alt: "", width: 44, height: 44 });
+  if (photo) {
+    const img = h("img.avatar", { src: photo, alt: "", width: 44, height: 44 });
+    img.addEventListener("error", () => img.replaceWith(initialAvatar(name, 44)), { once: true });
+    return img;
+  }
   return initialAvatar(name, 44);
 }
 

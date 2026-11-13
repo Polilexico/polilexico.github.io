@@ -1,5 +1,5 @@
 import { h, replace } from "../dom.js";
-import { lobbyRoute, adjournedWith, resumeWith, challenge } from "./lobby.js";
+import { lobbyRoute, adjournedWith, resumeWith, challenge, watchGame } from "./lobby.js";
 import { go } from "../router.js";
 import { nameFlag, initialAvatar, flag } from "../parts.js";
 import { icon } from "../icons.js";
@@ -14,8 +14,12 @@ const PHOTO_SIDE = 256;
 const MAX_BYTES = 60000;
 let photoVersion = Date.now();
 
+export function photoUrl(name, country) {
+  return `${server()}/photo?name=${encodeURIComponent(name)}&country=${encodeURIComponent(country ?? "")}&v=${photoVersion}`;
+}
+
 export function photoAvatar(name, country, size = 40) {
-  const img = h("img.avatar", { src: `${server()}/photo?name=${encodeURIComponent(name)}&country=${encodeURIComponent(country ?? "")}&v=${photoVersion}`, alt: "", width: size, height: size, loading: "lazy" });
+  const img = h("img.avatar", { src: photoUrl(name, country), alt: "", width: size, height: size, loading: "lazy" });
   img.addEventListener("error", () => img.replaceWith(initialAvatar(name, size)), { once: true });
   return img;
 }
@@ -34,14 +38,23 @@ export function profileButton() {
 
 function mainAction(person, close) {
   const game = person.playing ? online.lobby.games.find((g) => g.players?.includes(person.name)) : null;
-  if (game) return h("button.btn.small", { onclick: () => (close(), online.watch(game.id)) }, "Ver");
+  if (game) return h("button.btn.small", { onclick: () => (close(), watchGame(online, game.id)) }, "Ver");
   if (person.playing) return h("button.text-btn", { onclick: close }, "Cerrar");
   const adjourned = adjournedWith(online, person);
   if (adjourned) return h("button.btn.small", { disabled: !!adjourned.busy, onclick: () => (close(), resumeWith(online, adjourned)) }, "Retomar");
   return h("button.btn.small", { onclick: () => (close(), challenge(person)) }, "Retar");
 }
 
-export function profileDialog(person) {
+const SEAT_COUNTRY = /^(.*) \(([A-Z]{2})\)$/;
+
+export function seatProfile(seat) {
+  const found = SEAT_COUNTRY.exec(seat);
+  const name = found?.[1] ?? seat;
+  const country = found?.[2] ?? online.lobby.people.find((p) => p.name === name)?.country ?? "";
+  profileDialog({ name, country, playing: true });
+}
+
+export function profileDialog(person, inGame = !!online.room) {
   const body = h("div.stack.profile-stats", {}, h("div.spinner"));
   const me = account();
   const self = me && me.name === person.name && me.country === person.country;
@@ -51,7 +64,7 @@ export function profileDialog(person) {
     body,
     actions(
       self ? null : h("button.btn.small.outlined", { onclick: () => (close(), writeMessage(person)) }, "💬 Escribir"),
-      self ? h("button.text-btn", { onclick: close }, "Cerrar") : mainAction(person, close),
+      self || inGame ? h("button.text-btn", { onclick: close }, "Cerrar") : mainAction(person, close),
     ),
   ]);
   stats(`/profile?name=${encodeURIComponent(person.name)}&country=${encodeURIComponent(person.country)}`, body, "Aún no tiene partidas en línea.");
