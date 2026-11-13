@@ -1,0 +1,224 @@
+.home-head { gap: 0; min-height: 48px; }
+
+.home-head .brand { font-size: 22px; gap: 8px; }
+
+.home-head .brand img { width: 32px; }
+
+.home-head .head-actions { gap: 2px; }
+
+.online-chip { min-height: 32px; padding: 0 10px; border-radius: 8px; font-size: 14px; gap: 6px; }
+
+.card.choice { gap: 10px; padding: 8px; border-radius: 10px; }
+
+.card.choice.selected { padding: 7px; }
+
+.card.choice .avatar { width: 44px; height: 44px; }
+
+.card.choice .muted { line-height: 1.3; }
+
+.study-btn { font-size: 15px; padding: 0 8px; }
+
+@media (max-width: 379px) {
+  .home-head .brand { font-size: 17px; gap: 6px; }
+
+  .home-head .brand img { width: 25px; }
+
+  .online-chip { padding: 0 8px; font-size: 13px; }
+}
+
+.rack-tile.palette-key, .rack-tile.pin-slot, .pin-slot { width: 36px; }
+
+.palette-key .rack-letter { font-size: 20px; }
+
+.palette-key .rack-letter.digraph { font-size: 14px; }
+
+.palette-key .rack-value { font-size: 8px; }
+
+.screen-head { gap: 8px; }
+
+.screen-head h1 { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+.screen-head .text-btn { flex: none; padding: 8px 6px; font-size: 15px; }
+
+.analyzer { grid-template-columns: minmax(0, 1fr); }
+
+.word-actions .btn { min-width: 0; padding: 0 10px; font-size: 15px; white-space: nowrap; }
+
+.game-row > .grow { min-width: 0; }
+
+.game-row > .grow > .row { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); gap: 8px; }
+
+.game-row > .grow > .row > .name-flag:last-child { text-align: end; }
+
+.bar-chat { display: inline-grid; }
+
+.letter-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+
+.letter-chip { display: inline-flex; align-items: center; justify-content: center; gap: 2px; min-width: 52px; height: 36px; padding: 0 8px; border-radius: 10px; background: var(--surface-variant); }
+
+.chip-count { font-size: 12px; color: var(--on-surface-variant); }
+
+.chip-letter { font-size: 18px; color: var(--on-surface); }
+
+.rack > .rack-tile { flex: 0 0 calc((100% - 7.2%) / 7); }
+
+.player-card { display: grid; grid-template-columns: auto minmax(0, 1fr) auto auto; grid-template-areas: "photo name score clock" "tiles tiles score clock"; align-items: center; gap: 2px 0; min-height: 0; padding: 3px 10px; border-radius: 10px; }
+
+.player-card.active { padding: 2px 9px; }
+
+.player-card > .avatar, .player-card > .initial { grid-area: photo; width: 24px !important; height: 24px !important; margin-right: 6px; font-size: 11px !important; }
+.player-card > .initial small { font-size: 6px !important; }
+
+.player-main { display: contents; }
+
+.player-main > .row { grid-area: name; min-width: 0; }
+
+.player-card .mini-tiles { grid-area: tiles; gap: 2px; }
+
+.player-name { font-size: 16px; }
+
+.player-card > .score { grid-area: score; min-width: 0; padding: 0 10px; font-size: 22px; font-weight: 700; }
+
+.player-card > .clock { grid-area: clock; min-width: 0; padding: 4px 8px; border-radius: 6px; font-family: ui-monospace, monospace; font-size: 16px; letter-spacing: 0; }
+
+.player-card .mini-tile { width: 22px; height: 22px; }
+
+.player-card .mini-tile.face-up { width: 22px; min-width: 0; padding: 0; font-size: 13px; }
+
+.player-card:not(:has(.mini-tile)) .player-main > .row { grid-row: 1 / 3; }
+
+.game-bar { min-height: 44px; gap: 0; }
+
+.game-bar .text-btn { flex: none; padding: 8px 5px; }
+
+.game-bar .icon-btn { flex: none; width: 36px; }
+
+.game-bar .bag-btn { flex: none; margin-left: auto; }
+
+body { font-size: 15px; }
+
+.btn { min-height: 44px; padding: 0 20px; font-size: 15px; }
+
+.btn.small { min-height: 38px; padding: 0 14px; font-size: 14px; }
+
+.text-btn { font-size: 15px; }
+
+.icon-btn { width: 40px; height: 40px; }
+
+.icon-btn svg { width: 22px; height: 22px; }
+
+.chip { min-height: 36px; padding: 0 16px; font-size: 14px; }
+
+.screen-head { min-height: 48px; }
+
+.screen-head h1 { font-size: 21px; }
+
+.section-title { font-size: 14px; }
+
+.mode-tab { min-height: 44px; font-size: 15px; }
+
+.field input, .field select { min-height: 48px; font-size: 16px; }
+
+.home-menu { gap: 12px; }
+
+.home-menu .btn { min-height: 52px; font-size: 17px; }
+
+.setup-step .start { min-height: 48px; }
+
+.dialog h2 { font-size: 20px; }
+
+.card.choice .title { font-size: 15px; }
+
+.card.choice .muted { font-size: 13px; }
+
+.move-row > .btn { min-height: 36px; font-size: 14px; }
+
+.game-buttons .play-btn { min-height: 52px; font-size: 18px; }
+
+.player-card.review-bar { display: flex; align-items: center; min-height: 0; padding: 4px 10px; }
+
+.player-card.review-bar.active { padding: 3px 9px; }
+
+.review-bar .player-name { font-size: 16px; }
+
+.review-bar .score { font-size: 20px; font-weight: 700; }
+
+.review-cell { width: 52px; font-size: 15px; }
+
+.review-header { letter-spacing: .4px; }
+
+.review-header .info-btn { width: 16px; height: 16px; font-size: 10px; }
+
+.review-value-head, .review-line .review-cell:nth-child(4) { width: 66px; }
+
+.review-line .review-cell:nth-child(2) { width: 32px; }
+
+.review-header .review-cell:nth-child(2) { width: 32px; }
+
+.review-move { font-size: 15px; }
+
+.review-actions .icon-btn { width: 36px; height: 36px; }
+
+.review-actions .text-btn { padding: 6px; }
+
+.invite-pop .invite-head b { font-size: 15px; line-height: 1.3; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+
+.invite-pop .invite-head .small { font-size: 12px; }
+
+.invite-pop .btn { min-height: 40px; padding: 0 12px; font-size: 14px; }
+
+.analysis-tiles .rack-tile.palette-key { width: 30px; }
+
+.analysis-tiles .palette-key .rack-letter { font-size: 17px; }
+
+.analysis-tiles .palette-key .rack-letter.digraph { font-size: 12px; }
+
+.palette-btn.crowded { display: none; }
+
+body { font-size: 16px; }
+
+.screen { padding: 6px 12px 16px; }
+
+.game { padding: 6px 2px 16px; }
+
+.btn { min-height: 40px; padding: 0 24px; font-size: 14px; font-weight: 500; letter-spacing: .1px; }
+
+.btn.small { min-height: 36px; padding: 0 12px; font-size: 14px; }
+
+.btn.block { width: 100%; }
+
+.text-btn { padding: 10px 12px; font-size: 14px; font-weight: 500; letter-spacing: .1px; }
+
+.home-menu .btn { min-height: 40px; font-size: 14px; }
+
+.setup-step .start, .btn.start { min-height: 40px; }
+
+.chip { min-height: 40px; padding: 0 24px; border-radius: var(--pill); font-size: 14px; font-weight: 500; }
+
+.chips { gap: 8px; }
+
+.mode-tab { min-height: 48px; font-size: 14px; font-weight: 500; }
+
+.section-title { font-size: 14px; font-weight: 500; }
+
+.dialog { padding: 24px; border-radius: 28px; font-size: 14px; }
+
+.dialog h2 { font-size: 24px; font-weight: 400; }
+
+.dialog .dialog-actions .text-btn { font-size: 14px; }
+
+.field input, .field select { min-height: 56px; font-size: 16px; }
+
+.game-buttons .play-btn { min-height: 52px; font-size: 18px; font-weight: 700; }
+
+.move-row > .btn { min-height: 36px; font-size: 14px; }
+
+.game-bar { min-height: 44px; }
+
+.game-bar .text-btn { height: 36px; padding: 0 8px; font-size: 14px; }
+
+.game-bar .icon-btn { width: 40px; height: 40px; }
+
+.round-bar { padding: 6px 10px; border: 2px solid var(--primary); border-radius: 10px; font-size: 20px; font-weight: 700; }
+
+.round-clock { padding: 4px 8px; font-size: 16px; }
