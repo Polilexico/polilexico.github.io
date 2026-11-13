@@ -324,13 +324,27 @@
   .rack-tile.pin-slot, .pin-slot { width: 52px; }
 }
 
-.analyzer { display: grid; gap: 8px; padding: 4px 8px 24px; margin: 0 auto; max-width: clamp(560px, calc(100dvh - 320px), 860px); grid-template-areas: "head" "board" "side"; }
+.analyzer { display: grid; gap: 8px; min-height: 100dvh; padding: 4px 8px 12px; margin: 0 auto; max-width: clamp(560px, calc(100dvh - 320px), 860px); grid-template-columns: minmax(0, 1fr); grid-template-rows: auto auto auto 1fr; grid-template-areas: "head" "rack" "board" "panel"; }
 
 .analyzer-head { grid-area: head; }
 
+.analyzer-rack { grid-area: rack; min-width: 0; }
+
 .analyzer-board { grid-area: board; }
 
-.analyzer-side { grid-area: side; display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+.analyzer-panel { grid-area: panel; display: flex; flex-direction: column; min-width: 0; min-height: 0; }
+
+.analysis-panel { flex: 1; }
+
+.analysis-panel.editing { justify-content: flex-end; }
+
+.analyzer-rack > p:empty { display: none; }
+
+.anagrammer-screen { height: 100dvh; padding-bottom: 12px; }
+
+.anagrammer-scroll { flex: 1; min-height: 0; overflow: auto; display: flex; flex-direction: column; gap: 12px; }
+
+.anagrammer-screen > .palette { flex: none; }
 
 .analysis-rack { display: flex; align-items: center; gap: 8px; min-height: 52px; }
 
@@ -355,13 +369,14 @@ table.moves.ranked tr.active td { background: color-mix(in srgb, var(--primary) 
     max-width: none;
     width: fit-content;
     padding: 12px 24px;
+    min-height: 0;
+    height: calc(var(--board) + 24px);
     grid-template-columns: var(--board) var(--side);
-    grid-template-areas: "board head" "board side";
-    grid-template-rows: auto 1fr;
+    grid-template-areas: "board head" "board rack" "board panel";
+    grid-template-rows: auto auto 1fr;
     column-gap: 24px;
-    align-items: start;
   }
-  .analyzer-board { width: var(--board); }
+  .analyzer-board { width: var(--board); grid-row: 1 / -1; align-self: start; }
 }
 
 .analysis-tiles .rack-tile.palette-key { width: 36px; }
@@ -418,6 +433,32 @@ a.btn, a.text-btn { text-decoration: none; }
 
 .word-groups { display: flex; flex-direction: column; gap: 14px; align-self: center; max-width: 100%; }
 
+.word-groups:empty { display: none; }
+
+.word-groups .word-groups { align-self: stretch; }
+
+.word-main { display: flex; flex-direction: column; align-items: center; gap: 14px; align-self: stretch; }
+
+.meaning-panel { display: none; }
+
+@media (min-width: 900px) and (min-aspect-ratio: 1/1) {
+  .screen.word-screen { max-width: 1240px; }
+
+  .word-card-big { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.5fr) minmax(0, 1fr); grid-template-areas: "family main similar"; align-items: start; align-content: start; gap: 28px; }
+
+  .word-main { grid-area: main; }
+
+  .word-card-big > .word-groups { display: contents; }
+
+  .word-family { grid-area: family; align-self: start; justify-self: start; }
+
+  .word-similar { grid-area: similar; align-self: start; justify-self: end; }
+
+  .word-main:has(.meaning-panel) .meaning-line { display: none; }
+
+  .meaning-panel { display: flex; align-self: stretch; padding: 14px 16px; border-radius: 14px; background: var(--c2); }
+}
+
 .word-group { display: flex; flex-direction: column; gap: 6px; }
 
 .word-group .list-label { padding: 8px 10px 0; }
@@ -447,6 +488,18 @@ hr.thick { width: 100%; border: 0; border-top: 2px solid var(--on-surface); marg
 .filter-row { gap: 4px; }
 
 .filter-edit { min-height: 44px; border: 0; border-radius: 8px; background: none; color: inherit; text-align: left; cursor: pointer; }
+
+@media (min-width: 900px) and (min-aspect-ratio: 1/1) {
+  .dialog:has(.filter-choices) { width: min(100%, 980px); }
+
+  .filter-choices { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+
+  .filter-choices .filter-choice > .grow { flex-grow: 0; }
+
+  .filter-rows { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 4px 24px; }
+
+  .screen.study-screen:has(.filter-rows) { max-width: 1040px; }
+}
 
 .filter-choice { display: flex; flex-direction: column; align-items: flex-start; gap: 2px; padding: 12px 16px; border: 0; border-radius: 12px; background: var(--c4); color: inherit; text-align: left; cursor: pointer; }
 
