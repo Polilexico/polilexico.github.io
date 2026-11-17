@@ -18,6 +18,7 @@ import { efficiencyOf, efficiencyDialog } from "./efficiency.js";
 import { exportDialog } from "./export.js";
 import { icon, bagIcon } from "../icons.js";
 import { showBag } from "../classic/moves.js";
+import { reviewPlayers, facePhoto } from "./reviewFaces.js";
 import { movesTable, reviewMovesDialog, turnBag, moveOf, pageOf, candidatesTable, turnTitle, scoreBar } from "./reviewParts.js";
 
 let pendingPosition = null;
@@ -59,7 +60,7 @@ async function openRecord(holder, id, ui, atEndgame) {
   loading.stop();
   ui.classic = ui.game.Mode !== "duplicate";
   ui.opponent = ui.game.Mode === "duplicate" ? "Máster" : alias(ui.game.Opponent);
-  ui.me = ui.game.Local ? ui.game.Me : "Tú";
+  Object.assign(ui, reviewPlayers(ui.game, record, ui.opponent));
   const endgame = ui.game.Turns.findIndex((t) => t.Endgame);
   ui.index = Math.max(0, atEndgame && endgame >= 0 ? endgame : (ui.game.StartTurn ?? 0));
   ui.explore = { open: "exploreReview", args: (i) => [ui.text, i] };
@@ -93,6 +94,7 @@ function mount(holder, ui) {
   ui.goTo = (i) => goTo(ui, i);
   ui.moveOf = moveOf;
   ui.nameOf = (name) => (name === "Tú" ? ui.me : alias(name));
+  ui.photoOf = (name) => facePhoto(ui.faces?.get(name), name);
   ui.top = h("div.stack.review-top");
   ui.bottom = h("div.stack.review-bottom");
   ui.head = h("div.review-head");
@@ -147,7 +149,7 @@ function turn(ui) {
 
 function draw(ui) {
   const t = turn(ui);
-  replace(ui.head, screenHead(titleOf(ui, t), ui.back, headActions(ui, t)));
+  replace(ui.head, screenHead(titleOf(ui, t), ui.back, bagButton(ui, t)), ui.position ? null : headTools(ui));
   if (t.Endgame) return drawEndgame(ui, t);
   closeExplorer(ui);
   const page = pageFor(ui, t);
@@ -157,9 +159,9 @@ function draw(ui) {
   const pending = new Map();
   if (p) p.tiles.forEach((tile, i) => tile && !t.cells[at(p, i)] && pending.set(at(p, i), tile));
   ui.board.render({ cells: t.cells, pending });
-  replace(ui.top, turnTitle(t, ui.game.Turns.length), scoreBar(ui.opponent, t.OpponentScore, null, t.Player && !mine(ui, t)));
+  replace(ui.top, turnTitle(t, ui.game.Turns.length), scoreBar(ui.opponent, t.OpponentScore, null, t.Player && !mine(ui, t), ui.photoOf(ui.opponent)));
   replace(ui.bottom,
-    scoreBar(ui.me, t.MyScore, null, mine(ui, t)),
+    scoreBar(ui.me, t.MyScore, null, mine(ui, t), ui.photoOf(ui.me)),
     h("div.tile-line.review-rack", {}, tokens(t.Rack).map((l) => h("div.rack-tile.line-tile", {}, face(l)))),
     h("div.row.turn-nav", {},
       h("button.btn.small.outlined", { disabled: ui.index === 0, onclick: () => move(ui, -1) }, "‹"),
@@ -251,16 +253,21 @@ function mine(ui, t) {
   return t.Player === "Tú" || t.Player === ui.game.Me;
 }
 
-function headActions(ui, t) {
+function bagButton(ui, t) {
   const bag = turnBag(t, ui.classic);
-  const bagButton = h("button.bag-btn", { "aria-label": "Bolsa", onclick: () => showBag(bag.count, bag.rival, bag.tiles) }, bagIcon(bag.count));
-  if (ui.position) return h("div.row.review-actions", {}, bagButton);
-  return h("div.row.review-actions", {},
-    h("button.text-btn", { onclick: () => reviewMovesDialog(ui, (i) => goTo(ui, i)) }, "Movidas"),
-    h("button.icon-btn", { "aria-label": "Tema", onclick: themeDialog }, icon("palette")),
-    h("button.icon-btn", { "aria-label": ui.classic ? "Ventaja" : "Eficiencia", onclick: () => chartDialog(ui) }, icon("chart")),
-    h("button.bag-btn", { "aria-label": "Bolsa", onclick: () => showBag(bag.count, bag.rival, bag.tiles) }, bagIcon(bag.count)),
+  return h("button.bag-btn", { "aria-label": "Bolsa", onclick: () => showBag(bag.count, bag.rival, bag.tiles) }, bagIcon(bag.count));
+}
+
+function headTools(ui) {
+  return h("div.row.review-tools", {},
+    toolButton("moves", "Movidas", () => reviewMovesDialog(ui, (i) => goTo(ui, i))),
+    toolButton("chart", ui.classic ? "Ventaja" : "Eficiencia", () => chartDialog(ui)),
+    toolButton("palette", "Tema", themeDialog),
   );
+}
+
+function toolButton(name, label, onclick) {
+  return h("button.review-tool", { onclick }, icon(name, 18), label);
 }
 
 function select(ui, m) {
